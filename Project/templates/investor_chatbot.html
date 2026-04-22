@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.chat-container{
+max-width:750px;
+margin:auto;
+}
+
+.chat-box{
+height:420px;
+overflow-y:auto;
+background:#020617;
+padding:20px;
+border-radius:12px;
+border:1px solid #1e293b;
+}
+
+.message{
+padding:12px 16px;
+margin:10px 0;
+border-radius:15px;
+max-width:70%;
+font-size:14px;
+}
+
+.ai{
+background:#1e293b;
+color:white;
+}
+
+.user{
+background:#2563eb;
+color:white;
+margin-left:auto;
+text-align:right;
+}
+
+.card-result{
+background:#020617;
+border:1px solid #334155;
+padding:15px;
+margin-top:10px;
+border-radius:10px;
+}
+
+</style>
+
+<div class="container mt-4 chat-container">
+
+<h3 class="mb-3">💰 Investor Discovery Assistant</h3>
+
+<p class="text-muted">
+Answer a few questions and our AI will recommend promising startups.
+</p>
+
+<div id="chat-box" class="chat-box"></div>
+
+<div class="mt-3 d-flex">
+
+<input
+id="user-input"
+class="form-control me-2"
+placeholder="Type your answer..."
+>
+
+<button onclick="sendMessage()" class="btn btn-primary">
+Send
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let questions=[
+
+"What industries do you invest in?",
+"What funding stage do you prefer?",
+"Which region do you invest in?"
+
+]
+
+let answers={}
+let step=0
+
+function addMessage(sender,message){
+
+let chat=document.getElementById("chat-box")
+
+let msg=document.createElement("div")
+
+msg.classList.add("message")
+
+if(sender==="AI"){
+msg.classList.add("ai")
+}else{
+msg.classList.add("user")
+}
+
+msg.innerHTML=message
+
+chat.appendChild(msg)
+
+chat.scrollTop=chat.scrollHeight
+
+}
+
+function showStartups(list){
+
+list.forEach(function(s){
+
+let similarity = (s.similarity_score*100).toFixed(0)
+
+let card=`
+<div class="card-result">
+
+<b>${s.industry} Startup</b><br>
+
+Region: ${s.region}<br>
+Funding Stage: ${s.funding_round}<br>
+Employees: ${s.employee_count}<br>
+
+Similarity Score: ${similarity}%<br>
+
+<b>Startup Strength Score: ${s.startup_score}/100</b>
+
+<div style="background:#374151;height:6px;border-radius:4px;margin-top:6px">
+<div style="width:${similarity}%;background:#22c55e;height:6px;border-radius:4px"></div>
+</div>
+
+</div>
+`
+
+addMessage("AI",card)
+
+})
+
+}
+
+function askQuestion(){
+
+if(step<questions.length){
+
+addMessage("AI",questions[step])
+
+}else{
+
+fetch("/investor_chatbot_match",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(answers)
+
+})
+.then(res=>res.json())
+
+.then(data=>{
+
+addMessage("AI","🎯 Here are startups matching your investment interest:")
+
+showStartups(data.startups)
+
+})
+
+}
+
+}
+
+function sendMessage(){
+
+let input=document.getElementById("user-input")
+
+let value=input.value.trim()
+
+if(value==="") return
+
+addMessage("user",value)
+
+if(step===0) answers["industry"]=value
+if(step===1) answers["funding_round"]=value
+if(step===2) answers["region"]=value
+
+input.value=""
+
+step++
+
+askQuestion()
+
+}
+
+document.getElementById("user-input").addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+e.preventDefault()
+
+sendMessage()
+
+}
+
+})
+
+window.onload=function(){
+
+addMessage("AI","Hello Investor 👋 Let's discover promising startups.")
+
+askQuestion()
+
+}
+
+</script>
+
+{% endblock %}

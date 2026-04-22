@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+<h2 class="mb-4">🌍 Startup Activity Feed</h2>
+
+<p class="text-muted">
+Live updates from startups and investors in the VentureMatch ecosystem.
+</p>
+
+<div id="feed-container"></div>
+
+</div>
+
+<script>
+
+function loadFeed(){
+
+fetch("/feed")
+
+.then(res => res.json())
+
+.then(data => {
+
+let container = document.getElementById("feed-container")
+
+container.innerHTML = ""
+
+data.forEach(function(item){
+
+let card = document.createElement("div")
+
+card.className = "card p-3 mb-3"
+
+card.innerHTML = `
+<div class="d-flex align-items-center">
+
+<div style="font-size:24px;margin-right:10px;">
+📢
+</div>
+
+<div>
+${item.message}
+<br>
+<small class="text-muted">Updated just now</small>
+</div>
+
+</div>
+`
+
+container.appendChild(card)
+
+})
+
+})
+
+}
+
+loadFeed()
+
+setInterval(loadFeed,5000)
+
+</script>
+
+{% endblock %}

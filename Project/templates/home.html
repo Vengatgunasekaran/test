@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>AI Startup–Investor Platform</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:#f4f6f9;
+}
+
+.section{
+margin-top:30px;
+}
+
+button{
+padding:10px 20px;
+margin:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>AI Startup–Investor Matchmaking Platform</h2>
+
+<!-- ROLE SELECTION -->
+
+<div id="roleSection" class="section">
+
+<h3>Choose your role</h3>
+
+<button onclick="chooseRole('startup')">Startup Founder</button>
+
+<button onclick="chooseRole('investor')">Investor</button>
+
+</div>
+
+
+<!-- REGISTER FORM -->
+
+<div id="registerSection" class="section" style="display:none">
+
+<h3>Create Account</h3>
+
+<input id="name" placeholder="Name"><br><br>
+
+<input id="email" placeholder="Email"><br><br>
+
+<input id="password" type="password" placeholder="Password"><br><br>
+
+<button onclick="registerUser()">Register</button>
+
+</div>
+
+
+<!-- CHATBOT -->
+
+<div id="chatSection" class="section" style="display:none">
+
+<h3>AI Chatbot</h3>
+
+<div id="messages"></div>
+
+<input id="userInput">
+
+<button onclick="sendMessage()">Send</button>
+
+</div>
+
+
+<script>
+
+let role=""
+
+function chooseRole(r){
+
+role=r
+
+document.getElementById("roleSection").style.display="none"
+
+document.getElementById("registerSection").style.display="block"
+
+}
+
+function registerUser(){
+
+document.getElementById("registerSection").style.display="none"
+
+document.getElementById("chatSection").style.display="block"
+
+startChat()
+
+}
+
+let step=0
+
+const questions=[
+"What industry?",
+"What funding stage?",
+"What region?",
+"How many employees?",
+"What revenue?",
+"What founded year?"
+]
+
+const answers={}
+
+function addMessage(sender,text){
+
+const msg=document.createElement("p")
+
+msg.innerHTML="<b>"+sender+":</b> "+text
+
+document.getElementById("messages").appendChild(msg)
+
+}
+
+function startChat(){
+
+addMessage("AI","Hello! Let's start.")
+
+addMessage("AI",questions[0])
+
+}
+
+function sendMessage(){
+
+const input=document.getElementById("userInput").value
+
+addMessage("You",input)
+
+answers[step]=input
+
+step++
+
+document.getElementById("userInput").value=""
+
+if(step<questions.length){
+
+addMessage("AI",questions[step])
+
+}else{
+
+fetch("/chatbot_match",{
+
+method:"POST",
+
+headers:{"Content-Type":"application/json"},
+
+body:JSON.stringify({
+
+industry:answers[0],
+
+funding_round:answers[1],
+
+region:answers[2],
+
+employee_count:Number(answers[3]),
+
+estimated_revenue_usd:Number(answers[4]),
+
+founded_year:Number(answers[5])
+
+})
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+addMessage("AI","🎯 Recommended Investors:")
+
+data.recommendations.forEach(r=>{
+
+addMessage("AI",r.investor+" (score "+r.final_score+")")
+
+})
+
+})
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+<!-- Dashboard Title -->
+
+<div class="mb-5 text-center">
+
+<h2 class="fw-bold">Welcome to VentureMatch AI</h2>
+
+<p class="text-muted">
+AI-powered platform connecting startups and investors through intelligent matching.
+</p>
+
+</div>
+
+
+<!-- Feature Cards -->
+
+<div class="row g-4">
+
+<!-- Startup Feed -->
+
+<div class="col-md-4">
+
+<div class="card p-4 h-100">
+
+<h5 class="mb-3">🌍 Startup Activity Feed</h5>
+
+<p>
+Explore startups actively seeking funding and investors currently investing.
+</p>
+
+<a href="/feed_page" class="btn btn-primary">
+View Feed
+</a>
+
+</div>
+
+</div>
+
+
+<!-- Startup AI Assistant -->
+
+<div class="col-md-4">
+
+<div class="card p-4 h-100">
+
+<h5 class="mb-3">🚀 Startup Funding Advisor</h5>
+
+<p>
+Answer a few questions and our AI will recommend the best investors for your startup.
+</p>
+
+<a href="/chatbot" class="btn btn-success">
+Start Matching
+</a>
+
+</div>
+
+</div>
+
+
+<!-- Investor AI Assistant -->
+
+<div class="col-md-4">
+
+<div class="card p-4 h-100">
+
+<h5 class="mb-3">💰 Investor Discovery Assistant</h5>
+
+<p>
+Find promising startups that match your investment preferences.
+</p>
+
+<a href="/investor_chatbot" class="btn btn-warning">
+Find Startups
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- How the Platform Works -->
+
+<div class="mt-5">
+
+<h4 class="mb-3">How VentureMatch AI Works</h4>
+
+<div class="row g-4">
+
+<div class="col-md-3">
+
+<div class="card p-3 text-center">
+
+<h5>1️⃣ Startup Profile</h5>
+
+<p class="small">
+Startups provide details about their industry, funding stage, and growth metrics.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card p-3 text-center">
+
+<h5>2️⃣ Investor Preferences</h5>
+
+<p class="small">
+Investors specify industries, funding stages, and regions they invest in.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card p-3 text-center">
+
+<h5>3️⃣ AI Matching</h5>
+
+<p class="small">
+Our AI model analyzes compatibility and predicts the best matches.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card p-3 text-center">
+
+<h5>4️⃣ Smart Recommendations</h5>
+
+<p class="small">
+The platform recommends top investors or startups with match scores.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+{% endblock %}

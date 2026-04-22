@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="text-center mb-5">🚀 Recommended Startups</h2>
+
+<div class="row">
+
+{% for s in startups %}
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow-lg p-4">
+
+<h4 class="mb-3">{{ s.industry }} Startup</h4>
+
+<p><b>Region:</b> {{ s.region }}</p>
+
+<p><b>Funding Stage:</b> {{ s.funding_round }}</p>
+
+<p><b>Employees:</b> {{ s.employee_count }}</p>
+
+<p>
+<b>Similarity Score:</b>
+{{ "%.2f"|format(s.similarity_score) }}
+</p>
+
+<button class="btn btn-primary w-100 mt-2">
+View Startup
+</button>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

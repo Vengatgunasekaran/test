@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4 text-center">
+AI Investor Recommendations
+</h2>
+
+<div class="row">
+
+{% for investor in recommendations %}
+
+<div class="col-md-4">
+
+<div class="card p-4 shadow-lg mb-4">
+
+<h4>{{ investor.investor }}</h4>
+
+<p>
+Match Probability:
+<strong>{{ investor.match_probability }}</strong>
+</p>
+
+<p>
+Compatibility Score:
+<strong>{{ investor.compatibility_score }}</strong>
+</p>
+
+<p>
+Final Score:
+<strong>{{ investor.final_score }}</strong>
+</p>
+
+<p>
+Startup Success Probability:
+<strong>{{ investor.startup_success_probability }}%</strong>
+</p>
+
+<p>
+Estimated Potential Funding:
+<strong>₹ {{ investor.funding_amount }}</strong>
+</p>
+
+<button class="btn btn-success">
+Connect Investor
+</button>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

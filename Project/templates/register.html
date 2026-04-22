@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Create Account</h2>
+
+<form method="POST">
+
+<input class="form-control mb-3" name="name" placeholder="Name">
+
+<input class="form-control mb-3" name="email" placeholder="Email">
+
+<input class="form-control mb-3" name="password" placeholder="Password">
+
+<select name="role" class="form-control mb-3">
+
+<option value="startup">Startup</option>
+<option value="investor">Investor</option>
+
+</select>
+
+<button class="btn btn-primary">Register</button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.chat-container{
+max-width:750px;
+margin:auto;
+}
+
+.chat-box{
+height:420px;
+overflow-y:auto;
+background:#020617;
+padding:20px;
+border-radius:12px;
+border:1px solid #1e293b;
+}
+
+.message{
+padding:8px 12px;
+margin:6px 0;
+border-radius:15px;
+display:inline-block;
+max-width:fit-content;
+word-wrap:break-word;
+font-size:14px;
+}
+
+.ai{
+background:#1e293b;
+color:white;
+align-self:flex-start;
+}
+
+.user{
+background:#2563eb;
+color:white;
+margin-left:auto;
+align-self:flex-end;
+}
+
+.card-result{
+background:#020617;
+border:1px solid #334155;
+padding:15px;
+margin-top:10px;
+border-radius:10px;
+}
+
+.chat-box{
+height:420px;
+overflow-y:auto;
+background:#020617;
+padding:20px;
+border-radius:12px;
+border:1px solid #1e293b;
+display:flex;
+flex-direction:column;
+}
+
+</style>
+
+<div class="container mt-4 chat-container">
+
+<h3 class="mb-3">🚀 Startup Funding Advisor</h3>
+
+<p class="text-muted">
+Answer a few questions and our AI will recommend the best investors for your startup.
+</p>
+
+<div id="chat-box" class="chat-box"></div>
+
+<div class="mt-3 d-flex">
+
+<input
+id="user-input"
+class="form-control me-2"
+placeholder="Type your answer..."
+>
+
+<button onclick="sendMessage()" class="btn btn-success">
+Send
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let questions = [
+
+"Which industry is your startup in?",
+"What funding stage are you currently in?",
+"Which region is your startup located in?",
+"How many employees work in your startup?",
+"What is your estimated annual revenue (INR)?",
+"In which year was your startup founded?"
+
+]
+
+let answers = {}
+
+let step = 0
+
+function addMessage(sender,message){
+
+let chat=document.getElementById("chat-box")
+
+let msg=document.createElement("div")
+
+msg.classList.add("message")
+
+if(sender==="AI"){
+msg.classList.add("ai")
+}else{
+msg.classList.add("user")
+}
+
+msg.innerHTML=message
+
+chat.appendChild(msg)
+
+chat.scrollTop=chat.scrollHeight
+
+}
+
+function showInvestors(list){
+
+list.forEach(function(inv){
+
+let card = `
+<div class="card-result">
+
+<b>${inv.investor}</b><br>
+
+Match Probability: ${inv.match_probability}%<br>
+Compatibility Score: ${inv.compatibility_score}%<br>
+
+<b>Investor Match Score: ${inv.normalized_score}%</b><br>
+
+Startup Success Probability: ${inv.startup_success_probability}%<br>
+
+AI Estimated Funding Potential: ₹${inv.funding_amount.toLocaleString()}
+
+<div style="background:#374151;height:6px;border-radius:4px;margin-top:6px">
+<div style="width:${inv.normalized_score}%;background:#22c55e;height:6px;border-radius:4px"></div>
+</div>
+
+</div>
+`
+
+addMessage("AI",card)
+
+})
+
+}
+
+function askQuestion(){
+
+if(step < questions.length){
+
+addMessage("AI",questions[step])
+
+}else{
+
+fetch("/chatbot_match",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(answers)
+
+})
+.then(res=>res.json())
+.then(data=>{
+
+addMessage("AI","🎯 Here are the best investors for your startup:")
+
+showInvestors(data.recommendations)
+
+})
+
+}
+
+}
+
+function sendMessage(){
+
+let input=document.getElementById("user-input")
+
+let value=input.value.trim()
+
+if(value==="") return
+
+addMessage("user",value)
+
+if(step===0) answers["industry"]=value
+if(step===1) answers["funding_round"]=value
+if(step===2) answers["region"]=value
+if(step===3) answers["employee_count"]=parseInt(value)
+if(step===4) answers["estimated_revenue_usd"]=parseFloat(value)/83
+if(step===5) answers["founded_year"]=parseInt(value)
+
+input.value=""
+
+step++
+
+askQuestion()
+
+}
+
+document.getElementById("user-input").addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+e.preventDefault()
+
+sendMessage()
+
+}
+
+})
+
+window.onload=function(){
+
+addMessage("AI","Hello Founder 👋 Let's find the best investors for your startup.")
+
+askQuestion()
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Investor Preferences</title>
+</head>
+
+<body>
+
+<h2>Investor Preference Form</h2>
+
+<form action="/investor_match" method="post">
+
+<label>Preferred Industry</label>
+<select name="industry">
+<option>AI/ML</option>
+<option>Fintech</option>
+<option>SaaS</option>
+<option>E-commerce</option>
+<option>Healthcare</option>
+<option>Blockchain</option>
+<option>Logistics</option>
+</select>
+
+<br><br>
+
+<label>Preferred Funding Stage</label>
+<select name="funding_round">
+<option>Seed</option>
+<option>Series A</option>
+<option>Series B</option>
+<option>Series C</option>
+<option>Series D</option>
+</select>
+
+<br><br>
+
+<label>Region</label>
+<input type="text" name="region">
+
+<br><br>
+
+<button type="submit">Find Startups</button>
+
+</form>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Startup Questionnaire</title>
+</head>
+
+<body>
+
+<h2>Startup Profile Form</h2>
+
+<form action="/startup_match" method="post">
+
+<label>Industry</label>
+<select name="industry">
+<option>AI/ML</option>
+<option>Fintech</option>
+<option>SaaS</option>
+<option>E-commerce</option>
+<option>Healthcare</option>
+<option>Blockchain</option>
+<option>Logistics</option>
+</select>
+
+<br><br>
+
+<label>Funding Stage</label>
+<select name="funding_round">
+<option>Pre-Seed</option>
+<option>Seed</option>
+<option>Series A</option>
+<option>Series B</option>
+<option>Series C</option>
+<option>Series D</option>
+</select>
+
+<br><br>
+
+<label>Region</label>
+<input type="text" name="region">
+
+<br><br>
+
+<label>Employees</label>
+<input type="number" name="employee_count">
+
+<br><br>
+
+<label>Estimated Revenue (INR)</label>
+<input type="number" name="estimated_revenue_inr" placeholder="Enter revenue in ₹">
+
+<br><br>
+
+<label>Founded Year</label>
+<input type="number" name="founded_year">
+
+<br><br>
+
+<button type="submit">Find Investors</button>
+
+</form>
+
+</body>
+</html>
